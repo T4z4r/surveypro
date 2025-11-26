@@ -10,13 +10,13 @@
 @endsection
 
 @section('content')
-<div class="py-8">
-        <div class="container-fluid px-4">
-            <div class="bg-white overflow-hidden shadow-xl rounded-2xl border">
-                <div class="p-8">
+<div class="py-5">
+        <div class="container-fluid px-3 px-lg-5">
+            <div class="bg-white overflow-hidden shadow rounded border">
+                <div class="p-4">
                     @if(session('success'))
-                        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200 px-6 py-4 rounded-xl mb-6 flex items-center">
-                            <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <div class="bg-success bg-opacity-10 border border-success text-success p-3 rounded mb-4 d-flex align-items-center">
+                            <svg class="me-3 flex-shrink-0" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                             </svg>
                             {{ session('success') }}
@@ -29,106 +29,106 @@
                             @method('PUT')
                         @endif
 
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                            <div class="lg:col-span-2">
-                                <label for="title" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Survey Title</label>
+                        <div class="row g-3 mb-4">
+                            <div class="col-12 col-lg-8">
+                                <label for="title" class="form-label fw-semibold text-dark">Survey Title</label>
                                 <input type="text" name="title" id="title" value="{{ old('title', $survey->title ?? '') }}" required
-                                       class="block w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors">
+                                       class="form-control @error('title') is-invalid @enderror">
                                 @error('title')
-                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center">
-                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <div class="invalid-feedback d-flex align-items-center">
+                                        <svg class="me-1" width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                                         </svg>
                                         {{ $message }}
-                                    </p>
+                                    </div>
                                 @enderror
                             </div>
 
-                            <div>
-                                <label for="status" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Status</label>
-                                <select name="status" id="status" class="block w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors">
+                            <div class="col-12 col-lg-4">
+                                <label for="status" class="form-label fw-semibold text-dark">Status</label>
+                                <select name="status" id="status" class="form-select @error('status') is-invalid @enderror">
                                     <option value="draft" {{ old('status', $survey->status ?? 'draft') === 'draft' ? 'selected' : '' }}>📝 Draft</option>
                                     <option value="active" {{ old('status', $survey->status ?? 'draft') === 'active' ? 'selected' : '' }}>🚀 Active</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="mb-8">
-                            <label for="description" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Description (Optional)</label>
+                        <div class="mb-4">
+                            <label for="description" class="form-label fw-semibold text-dark">Description (Optional)</label>
                             <textarea name="description" id="description" rows="4"
-                                      class="block w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors resize-none"
+                                      class="form-control" style="resize: none;"
                                       placeholder="Add a description to help respondents understand the purpose of your survey...">{{ old('description', $survey->description ?? '') }}</textarea>
                         </div>
 
-                        <div class="mb-8">
-                            <div class="flex justify-between items-center mb-6">
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div>
-                                    <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200">Questions</h3>
-                                    <p class="text-slate-600 dark:text-slate-400 text-sm mt-1">Add and configure your survey questions</p>
+                                    <h3 class="fs-4 fw-bold text-dark">Questions</h3>
+                                    <p class="text-muted fs-6 mt-1">Add and configure your survey questions</p>
                                 </div>
-                                <button type="button" id="addQuestion" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <button type="button" id="addQuestion" class="btn btn-success d-inline-flex align-items-center">
+                                    <svg class="me-2" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                     </svg>
                                     Add Question
                                 </button>
                             </div>
 
-                            <div id="questionsContainer" class="space-y-6">
+                            <div id="questionsContainer">
                                 @if($mode === 'edit' && $survey->questions)
                                     @foreach($survey->questions as $index => $question)
-                                        <div class="question-item bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl p-6" data-question-id="{{ $question->id }}">
+                                        <div class="question-item bg-light border rounded p-3 mb-4" data-question-id="{{ $question->id }}">
                                             <input type="hidden" name="questions[{{ $index }}][id]" value="{{ $question->id }}">
-                                            <div class="flex justify-between items-start mb-4">
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                                                        <span class="text-white font-semibold text-sm">{{ $index + 1 }}</span>
+                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-primary rounded d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                                                        <span class="text-white fw-semibold fs-6">{{ $index + 1 }}</span>
                                                     </div>
-                                                    <h4 class="text-lg font-semibold text-slate-800 dark:text-slate-200">Question {{ $index + 1 }}</h4>
+                                                    <h4 class="fs-5 fw-semibold text-dark mb-0">Question {{ $index + 1 }}</h4>
                                                 </div>
-                                                <button type="button" class="removeQuestion inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
-                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <button type="button" class="removeQuestion btn btn-danger btn-sm d-inline-flex align-items-center">
+                                                    <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                                     </svg>
                                                     Remove
                                                 </button>
                                             </div>
 
-                                            <div class="space-y-4">
-                                                <div>
-                                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Question Text</label>
+                                            <div>
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-medium text-dark">Question Text</label>
                                                     <input type="text" name="questions[{{ $index }}][question]" value="{{ $question->question }}" placeholder="Enter your question here..." required
-                                                           class="block w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors">
+                                                           class="form-control">
                                                 </div>
 
-                                                <div>
-                                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Question Type</label>
-                                                    <select name="questions[{{ $index }}][type]" class="question-type block w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors">
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-medium text-dark">Question Type</label>
+                                                    <select name="questions[{{ $index }}][type]" class="question-type form-select">
                                                         <option value="text" {{ $question->type === 'text' ? 'selected' : '' }}>📝 Text Answer</option>
                                                         <option value="radio" {{ $question->type === 'radio' ? 'selected' : '' }}>🔘 Single Choice (Radio)</option>
                                                         <option value="checkbox" {{ $question->type === 'checkbox' ? 'selected' : '' }}>☑️ Multiple Choice (Checkbox)</option>
                                                     </select>
                                                 </div>
 
-                                                <div class="options-container {{ $question->type === 'text' ? 'hidden' : '' }}">
-                                                    <div class="flex justify-between items-center mb-4">
-                                                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Answer Options</label>
-                                                        <button type="button" class="addOption inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors">
-                                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <div class="options-container {{ $question->type === 'text' ? 'd-none' : '' }}">
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <label class="fw-semibold text-dark fs-6">Answer Options</label>
+                                                        <button type="button" class="addOption btn btn-primary btn-sm d-inline-flex align-items-center">
+                                                            <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                                             </svg>
                                                             Add Option
                                                         </button>
                                                     </div>
-                                                    <div class="options-list space-y-3">
+                                                    <div class="options-list">
                                                         @if($question->options)
                                                             @foreach($question->options as $optIndex => $option)
-                                                                <div class="option-item flex items-center space-x-3">
+                                                                <div class="option-item d-flex align-items-center mb-2">
                                                                     <input type="hidden" name="questions[{{ $index }}][options][{{ $optIndex }}][id]" value="{{ $option->id }}">
                                                                     <input type="text" name="questions[{{ $index }}][options][{{ $optIndex }}][option_text]" value="{{ $option->option_text }}" placeholder="Enter option text..." required
-                                                                           class="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors">
-                                                                    <button type="button" class="removeOption inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
-                                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                           class="form-control me-2">
+                                                                    <button type="button" class="removeOption btn btn-danger btn-sm">
+                                                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                                                         </svg>
                                                                     </button>
@@ -144,15 +144,15 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-col sm:flex-row justify-end gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
-                            <a href="{{ route('surveys.index') }}" class="inline-flex items-center justify-center px-6 py-3 bg-slate-500 hover:bg-slate-600 text-white font-semibold rounded-xl transition-all duration-200 transform hover:-translate-y-0.5">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="d-flex flex-column flex-sm-row justify-content-end gap-3 pt-3 border-top">
+                            <a href="{{ route('surveys.index') }}" class="btn btn-secondary d-inline-flex align-items-center justify-content-center">
+                                <svg class="me-2" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                                 </svg>
                                 Cancel
                             </a>
-                            <button type="submit" class="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <button type="submit" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
+                                <svg class="me-2" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 {{ $mode === 'edit' ? 'Update Survey' : 'Create Survey' }}
@@ -198,9 +198,9 @@
                 const questionItem = e.target.closest('.question-item');
                 const optionsContainer = questionItem.querySelector('.options-container');
                 if (e.target.value === 'text') {
-                    optionsContainer.classList.add('hidden');
+                    optionsContainer.classList.add('d-none');
                 } else {
-                    optionsContainer.classList.remove('hidden');
+                    optionsContainer.classList.remove('d-none');
                 }
             }
         });
@@ -208,62 +208,62 @@
         function addQuestion(existingQuestion = null) {
             const container = document.getElementById('questionsContainer');
             const questionItem = document.createElement('div');
-            questionItem.className = 'question-item bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl p-6';
+            questionItem.className = 'question-item bg-light border rounded p-3 mb-4';
             if (existingQuestion && existingQuestion.id) {
                 questionItem.dataset.questionId = existingQuestion.id;
             }
 
             questionItem.innerHTML = `
                 ${existingQuestion ? `<input type="hidden" name="questions[${questionIndex}][id]" value="${existingQuestion.id}">` : ''}
-                <div class="flex justify-between items-start mb-4">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                            <span class="text-white font-semibold text-sm">${questionIndex + 1}</span>
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary rounded d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                            <span class="text-white fw-semibold fs-6">${questionIndex + 1}</span>
                         </div>
-                        <h4 class="text-lg font-semibold text-slate-800 dark:text-slate-200">Question ${questionIndex + 1}</h4>
+                        <h4 class="fs-5 fw-semibold text-dark mb-0">Question ${questionIndex + 1}</h4>
                     </div>
-                    <button type="button" class="removeQuestion inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="button" class="removeQuestion btn btn-danger btn-sm d-inline-flex align-items-center">
+                        <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
                         Remove
                     </button>
                 </div>
 
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Question Text</label>
+                <div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium text-dark">Question Text</label>
                         <input type="text" name="questions[${questionIndex}][question]" value="${existingQuestion ? existingQuestion.question : ''}" placeholder="Enter your question here..." required
-                               class="block w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors">
+                               class="form-control">
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Question Type</label>
-                        <select name="questions[${questionIndex}][type]" class="question-type block w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors">
+                    <div class="mb-3">
+                        <label class="form-label fw-medium text-dark">Question Type</label>
+                        <select name="questions[${questionIndex}][type]" class="question-type form-select">
                             <option value="text" ${existingQuestion && existingQuestion.type === 'text' ? 'selected' : ''}>📝 Text Answer</option>
                             <option value="radio" ${existingQuestion && existingQuestion.type === 'radio' ? 'selected' : ''}>🔘 Single Choice (Radio)</option>
                             <option value="checkbox" ${existingQuestion && existingQuestion.type === 'checkbox' ? 'selected' : ''}>☑️ Multiple Choice (Checkbox)</option>
                         </select>
                     </div>
 
-                    <div class="options-container ${existingQuestion && existingQuestion.type === 'text' ? 'hidden' : ''}">
-                        <div class="flex justify-between items-center mb-4">
-                            <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Answer Options</label>
-                            <button type="button" class="addOption inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="options-container ${existingQuestion && existingQuestion.type === 'text' ? 'd-none' : ''}">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <label class="fw-semibold text-dark fs-6">Answer Options</label>
+                            <button type="button" class="addOption btn btn-primary btn-sm d-inline-flex align-items-center">
+                                <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                 </svg>
                                 Add Option
                             </button>
                         </div>
-                        <div class="options-list space-y-3">
+                        <div class="options-list">
                             ${existingQuestion && existingQuestion.options ? existingQuestion.options.map((option, optIndex) => `
-                                <div class="option-item flex items-center space-x-3">
+                                <div class="option-item d-flex align-items-center mb-2">
                                     <input type="hidden" name="questions[${questionIndex}][options][${optIndex}][id]" value="${option.id}">
                                     <input type="text" name="questions[${questionIndex}][options][${optIndex}][option_text]" value="${option.option_text}" placeholder="Enter option text..." required
-                                           class="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors">
-                                    <button type="button" class="removeOption inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                           class="form-control me-2">
+                                    <button type="button" class="removeOption btn btn-danger btn-sm">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                         </svg>
                                     </button>
@@ -289,12 +289,12 @@
             const optionIndex = optionIndices[questionIndex] || 0;
 
             const optionItem = document.createElement('div');
-            optionItem.className = 'option-item flex items-center space-x-3';
+            optionItem.className = 'option-item d-flex align-items-center mb-2';
             optionItem.innerHTML = `
                 <input type="text" name="questions[${questionIndex}][options][${optionIndex}][option_text]" placeholder="Enter option text..." required
-                       class="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors">
-                <button type="button" class="removeOption inline-flex items-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       class="form-control me-2">
+                <button type="button" class="removeOption btn btn-danger btn-sm">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
@@ -307,7 +307,9 @@
         function reorderQuestions() {
             const questions = document.querySelectorAll('.question-item');
             questions.forEach((question, index) => {
-                question.querySelector('h4').textContent = `Question ${index + 1}`;
+                const questionNumber = index + 1;
+                question.querySelector('h4').textContent = `Question ${questionNumber}`;
+                question.querySelector('.bg-primary span').textContent = questionNumber;
                 // Update input names if needed
             });
         }
