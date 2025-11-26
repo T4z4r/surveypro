@@ -1,23 +1,35 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+@extends('layouts.app')
+
+@section('header')
+<div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center gap-3">
+        <div class="bg-info rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <svg class="text-white" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+        </div>
+        <div>
+            <h2 class="fw-bold display-5 text-dark mb-1">
                 Results: {{ $survey->title }}
             </h2>
-            <div class="space-x-2">
-                <a href="{{ route('surveys.results.pdf', $survey) }}" target="_blank"
-                   class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm">
-                    Export PDF
-                </a>
-                <a href="{{ route('surveys.results.csv', $survey) }}"
-                   class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm">
-                    Export CSV
-                </a>
-            </div>
+            <p class="text-muted mb-0">View survey responses and analytics</p>
         </div>
-    </x-slot>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{{ route('surveys.results.pdf', $survey) }}" target="_blank"
+           class="btn btn-danger btn-sm">
+            Export PDF
+        </a>
+        <a href="{{ route('surveys.results.csv', $survey) }}"
+           class="btn btn-success btn-sm">
+            Export CSV
+        </a>
+    </div>
+</div>
+@endsection
 
-    <div class="py-12">
+@section('content')
+<div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -88,4 +100,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

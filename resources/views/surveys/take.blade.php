@@ -1,21 +1,16 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center space-x-4">
-            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-            </div>
-            <div>
-                <h2 class="font-bold text-3xl text-slate-800 dark:text-slate-200 leading-tight">
-                    {{ $survey->title }}
-                </h2>
-                <p class="mt-1 text-slate-600 dark:text-slate-400">Fill out this survey</p>
-            </div>
-        </div>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-8">
+@section('header')
+{!! view('components.survey-header', [
+    'title' => $survey->title,
+    'description' => 'Fill out this survey',
+    'bgColor' => 'success',
+    'iconPath' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+]) !!}
+@endsection
+
+@section('content')
+<div class="py-8">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-slate-800 overflow-hidden shadow-xl sm:rounded-2xl border border-slate-200 dark:border-slate-700">
                 <div class="p-8">
@@ -145,4 +140,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

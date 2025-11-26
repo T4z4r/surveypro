@@ -19,17 +19,15 @@
             @include('layouts.navigation')
 
             <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow-sm border-bottom">
-                    <div class="container-fluid px-4 py-4">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+            <header class="bg-white shadow-sm border-bottom">
+                <div class="container-fluid px-4 py-4">
+                    @yield('header')
+                </div>
+            </header>
 
             <!-- Page Content -->
             <main class="flex-grow-1 pb-5">
-                {{ $slot }}
+                @yield('content')
             </main>
         </div>
     </body>
