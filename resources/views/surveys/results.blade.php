@@ -29,70 +29,70 @@
 @endsection
 
 @section('content')
-<div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <div class="mb-6">
-                        <p class="text-gray-600">Total Responses: {{ $survey->responses()->count() }}</p>
+<div class="py-5">
+        <div class="container-fluid px-3 px-lg-5">
+            <div class="bg-white overflow-hidden shadow rounded">
+                <div class="p-3 bg-white border-bottom">
+                    <div class="mb-4">
+                        <p class="text-muted">Total Responses: {{ $survey->responses()->count() }}</p>
                         @if($survey->description)
-                            <p class="text-gray-700 mt-2">{{ $survey->description }}</p>
+                            <p class="text-dark mt-2">{{ $survey->description }}</p>
                         @endif
                     </div>
 
                     @if($survey->responses()->count() > 0)
                         @foreach($survey->questions as $question)
-                            <div class="mb-8 p-6 border border-gray-200 rounded">
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">{{ $question->question }}</h3>
+                            <div class="mb-4 p-3 border rounded">
+                                <h3 class="fs-5 fw-medium text-dark mb-3">{{ $question->question }}</h3>
 
                                 @if($question->type === 'text')
-                                    <div class="space-y-2">
-                                        <h4 class="font-medium text-gray-700">Text Responses:</h4>
+                                    <div>
+                                        <h4 class="fw-medium text-dark">Text Responses:</h4>
                                         @if($results[$question->id]->isNotEmpty())
                                             @foreach($results[$question->id] as $answer)
-                                                <div class="p-3 bg-gray-50 rounded">
+                                                <div class="p-2 bg-light rounded mb-2">
                                                     {{ $answer ?: '(No answer)' }}
                                                 </div>
                                             @endforeach
                                         @else
-                                            <p class="text-gray-500 italic">No responses yet.</p>
+                                            <p class="text-muted fst-italic">No responses yet.</p>
                                         @endif
                                     </div>
 
                                 @else
-                                    <div class="space-y-3">
-                                        <h4 class="font-medium text-gray-700">Response Distribution:</h4>
+                                    <div>
+                                        <h4 class="fw-medium text-dark">Response Distribution:</h4>
                                         @if($results[$question->id]->isNotEmpty())
                                             @foreach($results[$question->id] as $optionData)
-                                                <div class="flex items-center justify-between">
-                                                    <span class="text-gray-700">{{ $optionData['option'] }}</span>
-                                                    <div class="flex items-center space-x-2">
-                                                        <div class="w-32 bg-gray-200 rounded-full h-4">
-                                                            <div class="bg-blue-600 h-4 rounded-full" style="width: {{ $survey->responses()->count() > 0 ? ($optionData['count'] / $survey->responses()->count()) * 100 : 0 }}%"></div>
+                                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                                    <span class="text-dark">{{ $optionData['option'] }}</span>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="progress me-2" style="width: 128px; height: 16px;">
+                                                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $survey->responses()->count() > 0 ? ($optionData['count'] / $survey->responses()->count()) * 100 : 0 }}%"></div>
                                                         </div>
-                                                        <span class="text-sm text-gray-600 w-12 text-right">{{ $optionData['count'] }}</span>
+                                                        <span class="fs-6 text-muted text-end" style="width: 48px;">{{ $optionData['count'] }}</span>
                                                     </div>
                                                 </div>
                                             @endforeach
                                         @else
-                                            <p class="text-gray-500 italic">No responses yet.</p>
+                                            <p class="text-muted fst-italic">No responses yet.</p>
                                         @endif
                                     </div>
                                 @endif
                             </div>
                         @endforeach
                     @else
-                        <div class="text-center py-12">
-                            <p class="text-gray-500 text-lg">No responses have been submitted yet.</p>
-                            <p class="text-gray-400 mt-2">Share the survey link to start collecting responses.</p>
+                        <div class="text-center py-5">
+                            <p class="text-muted fs-5">No responses have been submitted yet.</p>
+                            <p class="text-secondary mt-2">Share the survey link to start collecting responses.</p>
                         </div>
                     @endif
 
-                    <div class="mt-6 flex justify-between">
-                        <a href="{{ route('surveys.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    <div class="mt-3 d-flex justify-content-between">
+                        <a href="{{ route('surveys.index') }}" class="btn btn-secondary">
                             Back to Surveys
                         </a>
-                        <a href="{{ route('surveys.edit', $survey) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <a href="{{ route('surveys.edit', $survey) }}" class="btn btn-primary">
                             Edit Survey
                         </a>
                     </div>
